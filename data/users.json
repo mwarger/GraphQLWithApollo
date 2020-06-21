@@ -1,1 +1,10 @@
-[]
+{
+  "users": [
+    {
+      "id": 1,
+      "sub": 123,
+      "email": "user123@gmail.com",
+      "pwHash": "asdf1234"
+    }
+  ]
+}

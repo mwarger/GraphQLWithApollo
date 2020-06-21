@@ -1,4 +1,4 @@
-const _ = require('lodash');
+const _ = require("lodash");
 
 module.exports = {
   sessions: (parent, args, { dataSources }, info) => {
@@ -16,5 +16,13 @@ module.exports = {
   speakerById: async (parent, { id }, { dataSources }, info) => {
     const speaker = await dataSources.speakerAPI.getSpeakerById(id);
     return speaker;
+  },
+  users: async (parent, args, context, info) => {
+    const users = await context.dataSources.userService.getUsers();
+    return users;
+  },
+  userById: async (parent, { id }, { dataSources }, info) => {
+    const user = await dataSources.userService.getUserById(id);
+    return user;
   },
 };

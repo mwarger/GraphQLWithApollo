@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server');
+const { gql } = require("apollo-server");
 
 module.exports = gql`
   type Query {
@@ -17,9 +17,23 @@ module.exports = gql`
     sessionById(id: ID): Session
     speakers: [Speaker]
     speakerById(id: ID): Speaker
+    users: [User]
+    userById(id: ID): User
   }
   type Mutation {
     makeSpeakerFeatured(id: ID): Speaker
+    signUp(credentials: Credentials!): AuthPayload
+    signIn(credentials: Credentials!): AuthPayload
+  }
+
+  input Credentials {
+    email: String!
+    password: String!
+  }
+
+  type AuthPayload {
+    token: String
+    user: User
   }
 
   type Speaker {
@@ -29,6 +43,14 @@ module.exports = gql`
     featured: Boolean
     sessions: [Session]
   }
+
+  type User {
+    id: ID!
+    sub: String!
+    email: String!
+    pwHash: String!
+  }
+
   type Session {
     id: ID!
     title: String!

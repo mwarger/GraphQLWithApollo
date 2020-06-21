@@ -1,37 +1,40 @@
-const { JsonDB } = require("node-json-db");
-const { Config } = require("node-json-db/dist/lib/JsonDBConfig");
-
 const { DataSource } = require("apollo-datasource");
-const _ = require("lodash");
+const lodashId = require("lodash-id");
+
+const low = require("lowdb");
+const FileSync = require("lowdb/adapters/FileSync");
+
+const adapter = new FileSync("./data/users.json");
+const db = low(adapter);
+db._.mixin(lodashId);
 
 class UserService extends DataSource {
   constructor() {
-    console.log("in userservice");
-    this.db = new JsonDB(new Config("UserDB", true, true, "/"));
-    const user = {
-      sub: 123,
-      email: "user123@gmail.com",
-      hash: "asdf1234",
-    };
-    this.db.push("/users/1", {
-      id: 1,
-      ...user,
-    });
+    super();
   }
 
-  initialize(config) {}
+  initialize(config) {
+    this.db = db;
+  }
 
   getUsers(args) {
-    const data = this.db.getData("/users");
-    console.log("users", data);
-
+    const data = this.db.get("users").value();
     return data;
   }
 
   getUserById(id) {
-    const user = this.db.getData(`/users/${id}`);
-    console.log("user", user);
+    const user = this.db.get("users").getById(id).value();
     return user;
+  }
+
+  signUp(creds) {
+    // implement this
+    console.log("implement me");
+  }
+
+  signIn() {
+    // implement this
+    console.log("implement me");
   }
 }
 
